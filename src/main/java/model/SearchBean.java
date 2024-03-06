@@ -11,9 +11,11 @@ public class SearchBean implements Serializable{
 		
 	}
 	public SearchBean(String p_name) {
-		
+		this.p_name = p_name;
 	}
-	
+	public SearchBean(String[] p_categorys) {
+		this.p_categorys = p_categorys;
+	}
 	
 	
 	public String getP_name() {
