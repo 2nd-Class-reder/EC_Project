@@ -28,8 +28,22 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
+		String pn ="";
+		pn = request.getParameter("p_name");
+		String[] pc = request.getParameterValues("p_category");
+		
+		if(pn.equals("") || pn == null) {
+		}
+		if(pn == null && pc == null) {
+			response.sendRedirect("/EC_Project/searchView.jsp");
+			
+		} else if(pn.isEmpty()) {
+			response.sendRedirect("/EC_Project/searchView.jsp");
+		} else {
+		
 		String p_name = request.getParameter("p_name");
 		String[] p_categorysArray = request.getParameterValues("p_category");
+		
 		
 		List<String> p_categorys = new ArrayList<>();
 		if(p_categorysArray == null) {
@@ -49,11 +63,10 @@ public class SearchServlet extends HttpServlet {
 			sb = new SearchBean(p_categorys);
 			request.setAttribute("sb", sb);
 			rd = request.getRequestDispatcher("/WEB-INF/jsp/productCategoryResult.jsp");
-		} else {
-			response.sendRedirect("/EC_Project/searchView.jsp");
-		}
+		} 
 		
 		rd.forward(request, response);
+		}
 		
 		
 	}
