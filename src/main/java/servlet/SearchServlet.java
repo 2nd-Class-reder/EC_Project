@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,11 +28,12 @@ public class SearchServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String p_name = request.getParameter("p_name");
-		String[] p_categorys = request.getParameterValues("p_category");
+		String[] p_categorysArray = request.getParameterValues("p_category");
+		List<String> p_categorys = Arrays.asList(p_categorysArray);
 		
 		SearchBean sb;
 		RequestDispatcher rd;
-		if(!(p_name.equals(null))) { //p_nameに値が入っていたらtrue
+		if(!(p_name == null)) { //p_nameに値が入っていたらtrue
 			sb = new SearchBean(p_name);
 			request.setAttribute("sb", sb);
 			rd = request.getRequestDispatcher("/WEB-INF/jsp/productSearchResult.jsp");
