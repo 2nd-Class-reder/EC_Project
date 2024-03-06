@@ -23,13 +23,13 @@
 	
 	<%-- post2 --%><%-- ※作成中 --%>
 	<h3><strong>商品分類で検索</strong></h3>
-	<form action="/EC_Project/main" method="Post">
-		<input type="checkbox" name="p_category" value="">
-		<input type="checkbox" name="p_category" value="">
-		<input type="checkbox" name="p_category" value="">
-		<input type="checkbox" name="p_category" value="">
-		<input type="checkbox" name="p_category" value="">
-		<input type="checkbox" name="p_category" value="">
+	<form action="/EC_Project/search" method="Post">
+		<input type="checkbox" name="p_category" value="1">
+		<input type="checkbox" name="p_category" value="2">
+		<input type="checkbox" name="p_category" value="3">
+		<input type="checkbox" name="p_category" value="4">
+		<input type="checkbox" name="p_category" value="5">
+		<input type="checkbox" name="p_category" value="6">
 		<input type="submit" value="検索">
 	</form>
 	
