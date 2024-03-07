@@ -18,6 +18,7 @@
 	<form action="/EC_Project/search" method="Post">
 		
 		<input type="text" name="p_name">
+		<input type="hidden" name="search_type" value="textSearch">
 		<input type="submit" value="検索">
 	</form>
 	
@@ -30,6 +31,7 @@
 		<input type="checkbox" name="p_category" value="4">
 		<input type="checkbox" name="p_category" value="5">
 		<input type="checkbox" name="p_category" value="6">
+		<input type="hidden" name="search_type" value="categorySearch">
 		<input type="submit" value="検索">
 	</form>
 	
