@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.SearchBean;
 
 
 @WebServlet("/search")
@@ -25,16 +28,44 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
+		//hidden属性の取得
 		String search_type = request.getParameter("search_type");
+		//各変数の用意
 		String p_name;
 		List<String> p_categorys = new ArrayList<>();
+		SearchBean sb;
+		RequestDispatcher rd = null;
 		
+		//商品名検索の場合
 		if(search_type == "textSearch") {
 			p_name = request.getParameter("p_name");
 			
+			if(p_name == null) {
+				response.sendRedirect("/EC_Project/searchView.jsp");
+			} else {
+				sb = new SearchBean(p_name);
+				request.setAttribute("sb", sb);
+				rd = request.getRequestDispatcher("./WEb-INF/jsp/productSearchResult.jsp");
+			}
+			
+		//商品分類検索の場合
 		} else if(search_type == "category_type") {
 			String[] p_categorysArray = request.getParameterValues("p_category");
-			p_categorys = Arrays.asList(p_categorysArray);		} 
+			
+			if(p_categorysArray == null) {
+				response.sendRedirect("/EC_Project/searchView.jsp");
+			} else {
+				p_categorys = Arrays.asList(p_categorysArray);
+				sb = new SearchBean(p_categorys);
+				request.setAttribute("sb", sb);
+				rd = request.getRequestDispatcher("./WEB-INF/jsp/productCategoryResult.jsp");
+			}
+		
+			rd.forward(request, response);
+			
+			
+		
+		} 
 		
 //		String pn ="";
 //		pn = request.getParameter("p_name");
