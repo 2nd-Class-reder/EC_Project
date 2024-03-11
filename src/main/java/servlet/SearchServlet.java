@@ -37,30 +37,44 @@ public class SearchServlet extends HttpServlet {
 		RequestDispatcher rd = null;
 		
 		//商品名検索の場合
-		if(search_type == "textSearch") {
+		if(search_type.equals("textSearch")) {
 			p_name = request.getParameter("p_name");
 			
-			if(p_name == null) {
+			if(p_name.isEmpty()) {
 				response.sendRedirect("/EC_Project/searchView.jsp");
 			} else {
 				sb = new SearchBean(p_name);
 				request.setAttribute("sb", sb);
-				rd = request.getRequestDispatcher("./WEb-INF/jsp/productSearchResult.jsp");
+				rd = request.getRequestDispatcher("./WEB-INF/jsp/productSearchResult.jsp");
 			}
 			
 		//商品分類検索の場合
-		} else if(search_type == "category_type") {
+		} else if(search_type.equals("categorySearch")) {
 			String[] p_categorysArray = request.getParameterValues("p_category");
 			
+			//  <発生している問題>
+			// 商品分類検索を行う際にチェックボックスにチェックをつけずに（nullの状態）検索をしたい際に
+			// searchView.jspへリダイレクトされずifブロックを抜けるため、変数rdがnullのままフォーワード文に
+			// 到達してしまい例外が発生する
+			
+			// <確認したこと>
+			// p_categorysArrayがnullである事
+			// if文の条件の中に入りsendRedirectメソットまで到達していること
+			
+			System.out.println("p_categorysArray：");
+			System.out.print(p_categorysArray);
 			if(p_categorysArray == null) {
+				System.out.println("\nifブロック内に到達：リダイレクト前");
 				response.sendRedirect("/EC_Project/searchView.jsp");
+				System.out.println("ifブロック内に到達：リダイレクト後");
 			} else {
 				p_categorys = Arrays.asList(p_categorysArray);
 				sb = new SearchBean(p_categorys);
 				request.setAttribute("sb", sb);
 				rd = request.getRequestDispatcher("./WEB-INF/jsp/productCategoryResult.jsp");
 			}
-		
+			
+			System.out.println("テストコード：フォーワード前");
 			rd.forward(request, response);
 			
 			
