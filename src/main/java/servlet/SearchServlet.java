@@ -14,114 +14,51 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.SearchBean;
 
-
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
-	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
-		//hidden属性の取得
+		// hidden属性の取得
 		String search_type = request.getParameter("search_type");
-		//各変数の用意
-		String p_name;
-		List<String> p_categorys = new ArrayList<>();
-		SearchBean sb;
-		RequestDispatcher rd = null;
-		
-		//商品名検索の場合
-		if(search_type.equals("textSearch")) {
-			p_name = request.getParameter("p_name");
-			
-			if(p_name.isEmpty()) {
-				response.sendRedirect("/EC_Project/searchView.jsp");
-			} else {
-				sb = new SearchBean(p_name);
-				request.setAttribute("sb", sb);
-				rd = request.getRequestDispatcher("./WEB-INF/jsp/productSearchResult.jsp");
-			}
-			
-		//商品分類検索の場合
-		} else if(search_type.equals("categorySearch")) {
-			String[] p_categorysArray = request.getParameterValues("p_category");
-			
-			//  <発生している問題>
-			// 商品分類検索を行う際にチェックボックスにチェックをつけずに（nullの状態）検索をしたい際に
-			// searchView.jspへリダイレクトされずifブロックを抜けるため、変数rdがnullのままフォーワード文に
-			// 到達してしまい例外が発生する
-			
-			// <確認したこと>
-			// p_categorysArrayがnullである事
-			// if文の条件の中に入りsendRedirectメソットまで到達していること
-			
-			System.out.println("p_categorysArray：");
-			System.out.print(p_categorysArray);
-			if(p_categorysArray == null) {
-				System.out.println("\nifブロック内に到達：リダイレクト前");
-				response.sendRedirect("/EC_Project/searchView.jsp");
-				System.out.println("ifブロック内に到達：リダイレクト後");
-			} else {
-				p_categorys = Arrays.asList(p_categorysArray);
-				sb = new SearchBean(p_categorys);
-				request.setAttribute("sb", sb);
-				rd = request.getRequestDispatcher("./WEB-INF/jsp/productCategoryResult.jsp");
-			}
-			
-			System.out.println("テストコード：フォーワード前");
-			rd.forward(request, response);
-			
-			
-		
-		} 
-		
-//		String pn ="";
-//		pn = request.getParameter("p_name");
-//		String[] pc = request.getParameterValues("p_category");
-//		
-//		if(pn.equals("") || pn == null) {
-//		}
-//		if(pn == null && pc == null) {
-//			response.sendRedirect("/EC_Project/searchView.jsp");
-//			
-//		} else if(pn.isEmpty()) {
-//			response.sendRedirect("/EC_Project/searchView.jsp");
-//		} else {
-//		
-//		String p_name = request.getParameter("p_name");
-//		String[] p_categorysArray = request.getParameterValues("p_category");
-//		
-//		
-//		List<String> p_categorys = new ArrayList<>();
-//		if(p_categorysArray == null) {
-//			p_categorys.add("0");
-//		}else {
-//			p_categorys = Arrays.asList(p_categorysArray);
-//		}
-//		
-//		SearchBean sb;
-//		RequestDispatcher rd = null;
-//		//Object.isNull()→引数がNULLの場合True
-//		if(p_name != null) { //p_nameがnullじゃない時true
-//			sb = new SearchBean(p_name);
-//			request.setAttribute("sb", sb);
-//			rd = request.getRequestDispatcher("/WEB-INF/jsp/productSearchResult.jsp");
-//		} else if(p_categorys != null) {//p_categorysがnullじゃない時true
-//			sb = new SearchBean(p_categorys);
-//			request.setAttribute("sb", sb);
-//			rd = request.getRequestDispatcher("/WEB-INF/jsp/productCategoryResult.jsp");
-//		} 
-//		
-//		rd.forward(request, response);
-//		}
-		
-		
+		// 各変数の用意
+		String p_name = request.getParameter("p_name");
+
+		// <商品名検索の場合>
+		if (p_name.isEmpty()) {
+			// 検索欄が空欄の場合リダイレクトする処理
+			response.sendRedirect("/EC_Project/searchView.jsp");
+			return;
+		}
+		SearchBean sb = new SearchBean(p_name);
+		request.setAttribute("sb", sb);
+		RequestDispatcher rd = request.getRequestDispatcher("./WEB-INF/jsp/productSearchResult.jsp");
+		rd.forward(request, response);
+
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		// hidden属性の取得
+		String search_type = request.getParameter("search_type");
+		// 各変数の用意
+		List<String> p_categorys = new ArrayList<>();
+		String[] p_categorysArray = request.getParameterValues("p_category");
+
+		// <商品分類検索の場合>
+		if (p_categorysArray == null) {
+			// カテゴリー欄が空欄の場合リダイレクトする
+			response.sendRedirect("/EC_Project/searchView.jsp");
+			return;
+		}
+		p_categorys = Arrays.asList(p_categorysArray);
+		SearchBean sb = new SearchBean(p_categorys);
+		request.setAttribute("sb", sb);
+		RequestDispatcher rd = request.getRequestDispatcher("./WEB-INF/jsp/productCategoryResult.jsp");
+		rd.forward(request, response);
+
+	}
 }

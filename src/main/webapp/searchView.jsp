@@ -15,7 +15,7 @@
 
 	<%-- post1 --%>
 	<h3><strong>商品名で検索</strong></h3>
-	<form action="/EC_Project/search" method="Post">
+	<form action="/EC_Project/search" method="Get">
 		
 		<input type="text" name="p_name">
 		<input type="hidden" name="search_type" value="textSearch">
